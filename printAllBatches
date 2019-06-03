@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#valLength=$(grep Test $1|cut -f3 |wc -l)
+
+## prints the final average validation loss per epoch where n is the number of test lines for each epoch
+grep Test $1|cut -f3 |grep -oP '\(\K[^\)]+'> AverageValidationLoss.txt
+
+## prints the final average validation accuracy per epoch where n is the number of test lines for each epoch
+grep Test $1|cut -f4|grep -oP '\(\K[^\)]+'> AverageValidationAccuracy.txt
+
+## print validation loss per batch
+grep Test $1|cut -f3 |cut -d ' ' -f2 > validationLoss.txt
+## get the final validation result for each epoch
+cat $1 | egrep [*]| cut -d ' ' -f 4 > validationPercentiles.txt
+
+
+
+## print training loss every  line
+#trainLength="$(cat $1 |grep Epoch | wc -l)" >/dev/null
+
+## prints the final average train loss per epoch where m is the number of batches for each training session
+cat $1 |grep Epoch |cut -f 1,4 | cut -f 2|grep -oP '\(\K[^\)]+' > averageTrainLoss.txt
+
+## prints the final average train accuracy at the end of each epoch
+cat $1 |grep Epoch |cut -f5 |cut -f 2|grep -oP '\(\K[^\)]+' > trainPercentiles.txt
+
+## print train loss per batch
+#cat $1 |grep Epoch |cut -f4 | cut -d ' ' -f2> trainLoss.txt
+
+##print train accuracy per batch
+
+
